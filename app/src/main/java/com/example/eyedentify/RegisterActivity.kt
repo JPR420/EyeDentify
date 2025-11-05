@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 
 class RegisterActivity : AppCompatActivity() {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        DatabaseHandler.init(this);
 
-        val etName = findViewById<EditText>(R.id.usernameInput)
         val etEmail = findViewById<EditText>(R.id.emailInput)
         val etPassword = findViewById<EditText>(R.id.passwordInput)
         val etConfirmPassword = findViewById<EditText>(R.id.passwordInputConfirm)
@@ -25,12 +27,12 @@ class RegisterActivity : AppCompatActivity() {
 
 
         btnRegister.setOnClickListener {
-            val name = etName.text.toString().trim()
+
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
             val confirmPassword = etConfirmPassword.text.toString().trim()
 
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -40,8 +42,19 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+//            if (DatabaseHandler.isEmailRegistered(email)) {
+//                Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
 
-            Toast.makeText(this, "Registered successfully as $name", Toast.LENGTH_SHORT).show()
+            if (DatabaseHandler.registerUser(email, password)) {
+                Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Registration failed.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
 
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
