@@ -23,18 +23,18 @@
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="  Email"
         android:inputType="textEmailAddress"
         android:drawableStart="@android:drawable/ic_dialog_email"
         android:padding="12dp"
-
         android:layout_marginBottom="16dp" />
 
     <EditText
+        style="@style/EyeDentifyEditText"
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint=" Password"
         android:inputType="textPassword"
         android:drawableStart="@android:drawable/ic_lock_lock"
         android:padding="12dp"
@@ -43,19 +43,24 @@
 
     <Button
         android:id="@+id/btnLogin"
+        style="@style/EyeDentifyButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/link_text_color"
         android:text="Login"
-        android:backgroundTint="@color/teal_700"
-        android:textColor="@color/white"
-        android:layout_marginBottom="16dp" />
+        android:textColor="@color/white" />
 
     <TextView
+
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
         android:text="Don’t have an account? Register"
-        android:textColor="@color/purple_700"
+        android:textColor="@color/link_text_color"
+        android:layout_marginTop="8dp"
         android:textSize="14sp" />
 
 </LinearLayout>

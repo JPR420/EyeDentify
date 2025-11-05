@@ -12,17 +12,18 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)  // links to your XML layout
+        setContentView(R.layout.activity_register)
 
-        // 🔹 Connect UI elements
+
         val etName = findViewById<EditText>(R.id.usernameInput)
         val etEmail = findViewById<EditText>(R.id.emailInput)
         val etPassword = findViewById<EditText>(R.id.passwordInput)
         val etConfirmPassword = findViewById<EditText>(R.id.passwordInputConfirm)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val tvLoginLink = findViewById<TextView>(R.id.tvLogin)
+        tvLoginLink.paint.isUnderlineText = true
 
-        // 🔹 Register Button Click
+
         btnRegister.setOnClickListener {
             val name = etName.text.toString().trim()
             val email = etEmail.text.toString().trim()
@@ -42,7 +43,6 @@ class RegisterActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Registered successfully as $name", Toast.LENGTH_SHORT).show()
 
-            // Redirect to login screen
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()

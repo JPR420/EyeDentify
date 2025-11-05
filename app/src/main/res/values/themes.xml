@@ -1,5 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.EyeDentify" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Base application theme -->
+    <style name="Theme.EyeDentify" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary / accent colors -->
+        <item name="colorSecondary">@color/primary_light</item>
+        <item name="colorSecondaryVariant">@color/primary_lighter</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <!-- Error colors -->
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/white</item>
+
+        <!-- Apply component styles -->
+        <item name="buttonStyle">@style/EyeDentifyButton</item>
+        <item name="android:textViewStyle">@style/EyeDentifyTextView</item>
+        <item name="editTextStyle">@style/EyeDentifyEditText</item>
+    </style>
+
+    <!-- Button style -->
+    <style name="EyeDentifyButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <!-- TextView style -->
+    <style name="EyeDentifyTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- EditText style -->
+    <style name="EyeDentifyEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <item name="android:backgroundTint">@color/primary</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
 </resources>
