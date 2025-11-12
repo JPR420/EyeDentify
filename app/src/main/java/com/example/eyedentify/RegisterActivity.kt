@@ -16,7 +16,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        DatabaseHandler.init(this);
+
 
         val etEmail = findViewById<EditText>(R.id.emailInput)
         val etPassword = findViewById<EditText>(R.id.passwordInput)
@@ -27,38 +27,24 @@ class RegisterActivity : AppCompatActivity() {
 
 
         btnRegister.setOnClickListener {
-
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
             val confirmPassword = etConfirmPassword.text.toString().trim()
 
-            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) return@setOnClickListener
+            if (password != confirmPassword) return@setOnClickListener
+
+            DatabaseHandler.registerUser(email, password) { success ->
+                runOnUiThread {
+                    if (success) {
+                        Toast.makeText(this, "Registered!", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Failed to register", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
-
-            if (password != confirmPassword) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-//            if (DatabaseHandler.isEmailRegistered(email)) {
-//                Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-
-            if (DatabaseHandler.registerUser(email, password)) {
-                Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Registration failed.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-
-
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
         }
 
 
