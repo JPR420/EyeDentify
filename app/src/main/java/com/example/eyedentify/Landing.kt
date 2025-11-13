@@ -19,5 +19,6 @@ class Landing : AppCompatActivity() {
         tvWelcome.text = "Welcome!"
         tvUserInfo.text = "Your ID: $userId\nTier: $userTier"
 
+
     }
 }
