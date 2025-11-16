@@ -29,14 +29,16 @@ class LoginActivity : AppCompatActivity() {
             val password = passwordInput.text.toString().trim()
 
 
-            if(!Patterns.EMAIL_ADDRESS.matcher(email).matches() ){
-                Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
             // Validate Empty inputs
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -45,7 +47,8 @@ class LoginActivity : AppCompatActivity() {
                 val loginResponse = ApiTest.login(email, password)
 
                 if (loginResponse != null && loginResponse.id != null) {
-                    Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT)
+                        .show()
 
                     // Navigate to Landing page and send user info
                     val intent = Intent(this@LoginActivity, Landing::class.java).apply {
@@ -55,10 +58,15 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    Toast.makeText(this@LoginActivity, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Invalid email or password",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
+
 
         // When user clicks "Register"
         tvRegister.setOnClickListener {
