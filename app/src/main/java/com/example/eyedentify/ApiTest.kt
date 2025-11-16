@@ -15,7 +15,8 @@ data class LoginResponse(val id: Int? = null, val tier: String? = null)
 
 object ApiTest {
 
-    private const val BASE_URL = "http://10.0.2.2:8080"
+//    private const val BASE_URL = "http://10.0.2.2:8080"
+    private const val BASE_URL = "http://192.168.1.160:8080"
 
     suspend fun register(email: String, password: String) : Boolean {
         try{
