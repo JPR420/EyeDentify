@@ -16,8 +16,24 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.request.forms.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.gson.*
+import kotlinx.coroutines.launch
 import java.io.File
-
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.label.ImageLabeling
+import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
+import com.google.android.gms.tasks.Task
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 class CameraActivity : AppCompatActivity() {
 
@@ -96,12 +112,42 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(result: ImageCapture.OutputFileResults) {
                     val uri = Uri.fromFile(photoFile)
 
+                    Log.d("CameraActivity", "File exists: ${photoFile.exists()}, size: ${photoFile.length()}")
 
-                    val intent = Intent(this@CameraActivity, ResultActivity::class.java)
-                    intent.putExtra("imageUri", uri.toString())
-                    startActivity(intent)
+
+                    lifecycleScope.launch {
+                        val result = ApiTest.identifyImage(photoFile)
+                        Log.d("CameraActivity", "Result: $result")
+
+
+
+                            val intent = Intent(this@CameraActivity, ResultActivity::class.java)
+                            intent.putExtra("imageUri", uri.toString())
+                            intent.putExtra("name", result?.name)
+                            intent.putExtra("confidence", result?.confidence)
+                            intent.putExtra("description", result?.description)
+                            startActivity(intent)
+
+                    }
                 }
             }
         )
     }
+
+
+
+
 }
+
+data class ApiResult(
+    val name: String,
+    val confidence: String,
+    val description: String
+)
+
+suspend fun <T> Task<T>.await(): T =
+    suspendCancellableCoroutine { cont ->
+        addOnSuccessListener { cont.resume(it) }
+        addOnFailureListener { cont.resumeWithException(it) }
+    }
+
