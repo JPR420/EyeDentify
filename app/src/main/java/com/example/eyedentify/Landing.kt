@@ -1,6 +1,7 @@
 package com.example.eyedentify;
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -66,39 +67,54 @@ class Landing : AppCompatActivity() {
         loadHistory()
     }
 
-    private fun loadHistory() {
+    private fun loadHistory() {;
+
 
         // Example data:
         captureList.add(
             CaptureResult(
-                imageUri = "file:///storage/emulated/0/DCIM/capture1.jpg",
+                imageUri = null,
                 name = "Rose",
                 confidence = 0.92f,
-                description = "A red flower commonly found in gardens."
+                description = "A red flower commonly found in gardens.",
+                imageResId = R.drawable.img
             )
         )
         captureList.add(
             CaptureResult(
-                imageUri = "file:///storage/emulated/0/DCIM/capture1.jpg",
+                imageUri = null,
                 name = "Rose",
                 confidence = 0.92f,
-                description = "A red flower commonly found in gardens."
+                description = "A red flower commonly found in gardens.",
+                imageResId = R.drawable.img_1
             )
         )
         captureList.add(
             CaptureResult(
-                imageUri = "file:///storage/emulated/0/DCIM/capture1.jpg",
+                imageUri = null,
                 name = "Rose",
                 confidence = 0.92f,
-                description = "A red flower commonly found in gardens."
+                description = "A red flower commonly found in gardens.",
+                imageResId = R.drawable.img_1
             )
         )
         captureList.add(
             CaptureResult(
-                imageUri = "file:///storage/emulated/0/DCIM/capture1.jpg",
+                imageUri = null,
                 name = "Rose",
                 confidence = 0.92f,
-                description = "A red flower commonly found in gardens."
+                description = "A red flower commonly found in gardens.",
+                imageResId =  R.drawable.ic_launcher_background
+            )
+        )
+
+        captureList.add(
+            CaptureResult(
+                imageUri = null,
+                name = "Rose",
+                confidence = 0.92f,
+                description = "A red flower commonly found in gardens.",
+                imageResId =  null
             )
         )
         captureAdapter.notifyDataSetChanged()
@@ -135,10 +151,26 @@ class CaptureAdapter(
 
     override fun onBindViewHolder(holder: CaptureViewHolder, position: Int) {
         val item = items[position]
-        Glide.with(holder.imageView.context)
-            .load(Uri.parse(item.imageUri))
-            .centerCrop()
-            .into(holder.imageView)
+        when {
+            item.imageResId != null -> {
+                // Load drawable
+                Glide.with(holder.imageView.context)
+                    .load(item.imageResId)
+                    .centerCrop()
+                    .into(holder.imageView)
+            }
+            !item.imageUri.isNullOrEmpty() -> {
+                // Load file or URL
+                Glide.with(holder.imageView.context)
+                    .load(Uri.parse(item.imageUri))
+                    .centerCrop()
+                    .into(holder.imageView)
+            }
+            else -> {
+                // placeholder if no image
+                holder.imageView.setImageResource(R.drawable.imagenotfound)
+            }
+        }
 
         holder.tvName.text = item.name
         holder.tvConfidence.text = "Confidence: ${(item.confidence * 100).toInt()}%"
@@ -149,7 +181,8 @@ class CaptureAdapter(
 
 
 data class CaptureResult(
-    val imageUri: String,
+    val imageResId: Int?, // for drawables testing
+    val imageUri: String?, // for files or URLs
     val name: String,
     val confidence: Float,
     val description: String

@@ -2,25 +2,41 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-       android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="12dp"
+    card_view:cardBackgroundColor="#000000"
+    card_view:cardCornerRadius="20dp"
+    card_view:cardElevation="4dp"
     android:layout_margin="8dp"
-    card_view:cardElevation="4dp">
+    android:paddingTop="50dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:background="#000000"
+    >
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_margin="8dp"
+            card_view:cardCornerRadius="16dp"
+            card_view:cardElevation="4dp">
         <ImageView
             android:id="@+id/ivCapture"
             android:layout_width="match_parent"
-            android:layout_height="281dp"
+            android:layout_height="500dp"
             android:contentDescription="Captured Image"
             android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#000000">
 
         <TextView
             android:id="@+id/tvName"
@@ -28,15 +44,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="Object Name"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/tvConfidence"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Confidence" />
+            android:text="Confidence"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/tvDescription"
@@ -44,8 +66,12 @@
             android:layout_height="88dp"
             android:layout_marginTop="6dp"
             android:text="Description / Fun Fact"
-            android:textColor="#555555"
-            android:textSize="14sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

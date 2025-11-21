@@ -17,19 +17,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.request.forms.*
-import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.serialization.gson.*
 import kotlinx.coroutines.launch
 import java.io.File
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.label.ImageLabeling
-import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
 import com.google.android.gms.tasks.Task
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -121,11 +110,13 @@ class CameraActivity : AppCompatActivity() {
 
 
 
+
+
                             val intent = Intent(this@CameraActivity, ResultActivity::class.java)
-                            intent.putExtra("imageUri", uri.toString())
-                            intent.putExtra("name", result?.name)
-                            intent.putExtra("confidence", result?.confidence)
-                            intent.putExtra("description", result?.description)
+                            intent.putExtra("imageUri", uri?.toString() ?: R.drawable.imagenotfound)
+                            intent.putExtra("name", result?.name ?: "Unknown Object")
+                            intent.putExtra("confidence", result?.confidence ?: "0.00%" )
+                            intent.putExtra("description",  result?.description ?: "No description available")
                             startActivity(intent)
 
                     }

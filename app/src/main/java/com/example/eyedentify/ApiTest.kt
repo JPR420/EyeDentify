@@ -74,7 +74,6 @@ object ApiTest {
     }
 
 
-
     suspend fun identifyImage(file: File): IdentifyResponse? {
         return try {
             val response: HttpResponse = client.submitFormWithBinaryData(
@@ -91,25 +90,7 @@ object ApiTest {
                 }
             )
 
-
             val bodyText = response.bodyAsText()
-
-            if (bodyText.isBlank()) {
-                Log.e("CameraActivity", "Server returned empty response!")
-                return null
-            }
-
-
-            Log.d(
-                        "CameraActivity",
-                        """
-            |=== Server Response ===
-            |URL: $BASE_URL/identify
-            |File: ${file.name}, size=${file.length()} bytes
-            |Response: $bodyText
-            |====================
-            """.trimMargin()
-                    )
 
             Json.decodeFromString<IdentifyResponse>(bodyText)
 
