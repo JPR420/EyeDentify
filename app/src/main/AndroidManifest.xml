@@ -38,10 +38,10 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- Register Activity -->
@@ -56,24 +56,34 @@
             android:name=".Landing"
             android:exported="true"
             android:label="Register">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+
 
         </activity>
 
         <!-- the others activities -->
-        <activity android:name=".CameraActivity" />
-        <activity android:name=".ResultActivity" />
-        <activity android:name=".SubscriptionActivity" />
-        <activity android:name=".SettingActivity" />
+        <activity android:name=".CameraActivity"
+            android:exported="true"
+            android:label="Camera"
+            />
+        <activity android:name=".ResultActivity"
+            android:exported="true"
+            android:label="Result"
+            />
+
+        <activity android:name=".SubscriptionActivity"
+            android:exported="true"
+            android:label="Subscription"/>
+
+        <activity android:name=".SettingActivity"
+            android:exported="true"
+            android:label="Setting"/>
 
 
         <!--  Main -->
         <activity
             android:name=".MainActivity"
-            android:exported="false"
+            android:exported="true"
+            android:label="Main"
 
             />
 

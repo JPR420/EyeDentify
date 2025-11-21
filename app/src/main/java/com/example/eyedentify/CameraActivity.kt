@@ -30,6 +30,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var captureBtn: ImageButton
     private var imageCapture: ImageCapture? = null
 
+    private var userID: Int = 1
 
 
     private val permissionLauncher =
@@ -40,6 +41,8 @@ class CameraActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+
+        userID = intent.getIntExtra("USER_ID", 1)
 
         previewView = findViewById(R.id.previewView)
         captureBtn = findViewById(R.id.captureBtn)
@@ -101,22 +104,22 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(result: ImageCapture.OutputFileResults) {
                     val uri = Uri.fromFile(photoFile)
 
-                    Log.d("CameraActivity", "File exists: ${photoFile.exists()}, size: ${photoFile.length()}")
-
 
                     lifecycleScope.launch {
                         val result = ApiTest.identifyImage(photoFile)
-                        Log.d("CameraActivity", "Result: $result")
-
-
 
 
 
                             val intent = Intent(this@CameraActivity, ResultActivity::class.java)
+
                             intent.putExtra("imageUri", uri?.toString() ?: R.drawable.imagenotfound)
+                            intent.putExtra( "USER_ID", userID )
                             intent.putExtra("name", result?.name ?: "Unknown Object")
-                            intent.putExtra("confidence", result?.confidence ?: "0.00%" )
+                            intent.putExtra("confidence", result?.confidence ?: 0.00 )
                             intent.putExtra("description",  result?.description ?: "No description available")
+                            intent.putExtra("link",  result?.link ?: "null")
+
+
                             startActivity(intent)
 
                     }
@@ -130,15 +133,6 @@ class CameraActivity : AppCompatActivity() {
 
 }
 
-data class ApiResult(
-    val name: String,
-    val confidence: String,
-    val description: String
-)
 
-suspend fun <T> Task<T>.await(): T =
-    suspendCancellableCoroutine { cont ->
-        addOnSuccessListener { cont.resume(it) }
-        addOnFailureListener { cont.resumeWithException(it) }
-    }
+
 

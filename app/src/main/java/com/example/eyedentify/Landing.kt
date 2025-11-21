@@ -31,9 +31,13 @@ class Landing : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
 
-        rvCaptures = findViewById(R.id.rvCaptures)
+        val userID = intent.getIntExtra("USER_ID",1)
+        val userTier = intent.getStringExtra("USER_TIER")
 
+        rvCaptures = findViewById(R.id.rvCaptures)
         fabCamera = findViewById(R.id.fabCamera)
+
+
 
         captureAdapter = CaptureAdapter(captureList) { capture ->
 
@@ -54,7 +58,9 @@ class Landing : AppCompatActivity() {
 
         //Camera button
         fabCamera.setOnClickListener {
-            startActivity(Intent(this, CameraActivity::class.java))
+            val intent = Intent(this, CameraActivity::class.java)
+            intent.putExtra("USER_ID", userID )
+            startActivity(intent)
         }
 
         //Subscription button
@@ -68,7 +74,6 @@ class Landing : AppCompatActivity() {
     }
 
     private fun loadHistory() {;
-
 
         // Example data:
         captureList.add(

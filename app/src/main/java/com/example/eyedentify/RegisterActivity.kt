@@ -56,7 +56,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
 
-            // API
+            // Register
             lifecycleScope.launch {
                 try {
                     val success = ApiTest.register(email, password)
