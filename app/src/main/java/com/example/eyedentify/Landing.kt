@@ -178,6 +178,7 @@ class Landing : AppCompatActivity() {
             }
         }
 
+
         tierButtonsVisible = true
     }
 
