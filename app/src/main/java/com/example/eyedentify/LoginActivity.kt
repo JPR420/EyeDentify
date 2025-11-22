@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
                     // Navigate to Landing page and send user info
                     val intent = Intent(this@LoginActivity, Landing::class.java).apply {
-                        putExtra("USER_ID", loginResponse.id)
+                        putExtra("USER_ID", loginResponse.id )
                         putExtra("USER_TIER", loginResponse.tier)
                     }
                     startActivity(intent)

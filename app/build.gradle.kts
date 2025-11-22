@@ -66,6 +66,17 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.3.4")
     implementation("io.ktor:ktor-serialization-gson:2.3.4")
 
+    implementation("io.ktor:ktor-client-android:2.3.6")
+    implementation("io.ktor:ktor-client-okhttp:2.3.6")
+    implementation("io.ktor:ktor-client-serialization:2.3.6")
+
+
+
+    implementation ("com.google.mlkit:image-labeling:17.0.7")
+
+
+
+
 
 
     implementation("androidx.camera:camera-core:1.3.1")
