@@ -19,10 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import java.io.File
-import com.google.android.gms.tasks.Task
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class CameraActivity : AppCompatActivity() {
 
@@ -31,7 +29,6 @@ class CameraActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
 
     private var userID: Int = 1
-
 
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -104,25 +101,25 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(result: ImageCapture.OutputFileResults) {
                     val uri = Uri.fromFile(photoFile)
 
+                    val intent = Intent(this@CameraActivity, ResultActivity::class.java)
 
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(Dispatchers.IO) {
+
                         val result = ApiTest.identifyImage(photoFile)
 
-
-
-                            val intent = Intent(this@CameraActivity, ResultActivity::class.java)
-
+                        withContext(Dispatchers.Main) {
                             intent.putExtra("imageUri", uri?.toString() ?: R.drawable.imagenotfound)
-                            intent.putExtra( "USER_ID", userID )
+                            intent.putExtra("USER_ID", userID)
                             intent.putExtra("name", result?.name ?: "Unknown Object")
-                            intent.putExtra("confidence", result?.confidence ?: 0.00 )
-                            intent.putExtra("description",  result?.description ?: "No description available")
-                            intent.putExtra("link",  result?.link ?: "null")
-
+                            intent.putExtra("confidence", result?.confidence)
+                            intent.putExtra("description",result?.description ?: "No description available")
+                            intent.putExtra("link", result?.link ?: "null")
 
                             startActivity(intent)
-
+                        }
                     }
+
+
                 }
             }
         )

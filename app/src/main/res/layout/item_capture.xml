@@ -46,7 +46,7 @@
             android:layout_marginBottom="10dp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="Object Name"
+
             android:textStyle="bold"
             android:textColor="#FFFFFF" />
 
@@ -55,7 +55,7 @@
             android:layout_width="376dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Confidence"
+
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textColor="#FFFFFF" />
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="88dp"
             android:layout_marginTop="6dp"
-            android:text="Description / Fun Fact"
+
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:paddingStart="10dp"

@@ -24,7 +24,7 @@ class ResultActivity : AppCompatActivity() {
 
          val imageUri = intent.getStringExtra("imageUri")
          val name = intent.getStringExtra("name")
-         val confidence = intent.getFloatExtra("confidence", 0.0F)
+         val confidence = intent.getStringExtra("confidence")
          val description = intent.getStringExtra("description")
          val link = intent.getStringExtra("link")
 
@@ -39,7 +39,7 @@ class ResultActivity : AppCompatActivity() {
 
          ivCapture.setImageURI(Uri.parse(imageUri))
          tvName.text = name
-         tvConfidence.text = confidence.toString()
+         tvConfidence.text = confidence
          tvDescription.text = description
 
 
@@ -49,7 +49,7 @@ class ResultActivity : AppCompatActivity() {
              lifecycleScope.launch {
 
 
-                 if (imageUri == null || name == null || description == null) {
+                 if (imageUri == null || name == null || description == null || confidence == null) {
                      Toast.makeText(appContext, "Missing data, cannot save.", Toast.LENGTH_SHORT).show()
                      return@launch
                  }
@@ -64,7 +64,7 @@ class ResultActivity : AppCompatActivity() {
                  val success = ApiTest.saveResult(
                      imageBytes,
                      name,
-                     "%.2f".format(confidence).toFloat(),
+                     confidence,
                      description,
                      link,
                      userID

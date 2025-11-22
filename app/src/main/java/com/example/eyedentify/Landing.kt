@@ -18,6 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.ImageButton
+import android.util.Base64
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 
 
 class Landing : AppCompatActivity() {
@@ -27,11 +34,13 @@ class Landing : AppCompatActivity() {
     private lateinit var captureAdapter: CaptureAdapter
     private val captureList = mutableListOf<CaptureResult>()
 
+    private var userID: Int = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
 
-        val userID = intent.getIntExtra("USER_ID",1)
+        userID = intent.getIntExtra("USER_ID", 1)
         val userTier = intent.getStringExtra("USER_TIER")
 
         rvCaptures = findViewById(R.id.rvCaptures)
@@ -73,56 +82,52 @@ class Landing : AppCompatActivity() {
         loadHistory()
     }
 
-    private fun loadHistory() {;
+    private fun loadHistory() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            // Fetch data from Backend
+            val historyItems = ApiTest.getUserHistory(userID)
 
-        // Example data:
-        captureList.add(
-            CaptureResult(
-                imageUri = null,
-                name = "Rose",
-                confidence = 0.92f,
-                description = "A red flower commonly found in gardens.",
-                imageResId = R.drawable.img
-            )
-        )
-        captureList.add(
-            CaptureResult(
-                imageUri = null,
-                name = "Rose",
-                confidence = 0.92f,
-                description = "A red flower commonly found in gardens.",
-                imageResId = R.drawable.img_1
-            )
-        )
-        captureList.add(
-            CaptureResult(
-                imageUri = null,
-                name = "Rose",
-                confidence = 0.92f,
-                description = "A red flower commonly found in gardens.",
-                imageResId = R.drawable.img_1
-            )
-        )
-        captureList.add(
-            CaptureResult(
-                imageUri = null,
-                name = "Rose",
-                confidence = 0.92f,
-                description = "A red flower commonly found in gardens.",
-                imageResId =  R.drawable.ic_launcher_background
-            )
-        )
+            val newCaptures = mutableListOf<CaptureResult>()
 
-        captureList.add(
-            CaptureResult(
-                imageUri = null,
-                name = "Rose",
-                confidence = 0.92f,
-                description = "A red flower commonly found in gardens.",
-                imageResId =  null
-            )
-        )
-        captureAdapter.notifyDataSetChanged()
+
+            for (item in historyItems) {
+                var uriString: String? = null
+
+                if (!item.image_base64.isNullOrEmpty()) {
+                    try {
+                        val imageBytes = Base64.decode(item.image_base64, Base64.DEFAULT)
+
+                        // Create a unique file name based on the name + random time
+                        val fileName = "history_${System.currentTimeMillis()}_${item.name}.jpg"
+                        val file = File(cacheDir, fileName)
+
+                        FileOutputStream(file).use { output ->
+                            output.write(imageBytes)
+                        }
+                        uriString = Uri.fromFile(file).toString()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
+                newCaptures.add(
+                    CaptureResult(
+                        imageResId = null,
+                        imageUri = uriString,
+                        name = item.name,
+                        confidence = item.confidence,
+                        description = item.description
+                    )
+                )
+            }
+
+            // Update UI
+            withContext(Dispatchers.Main) {
+                captureList.clear()
+                captureList.addAll(newCaptures)
+                captureAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
 }
@@ -136,6 +141,8 @@ class CaptureAdapter(
         val imageView: ImageView = view.findViewById(R.id.ivCapture)
         val tvName: TextView = view.findViewById(R.id.tvName)
         val tvConfidence: TextView = view.findViewById(R.id.tvConfidence)
+
+        val tvDescription : TextView = view.findViewById(R.id.tvDescription)
 
         init {
             view.setOnClickListener {
@@ -178,7 +185,8 @@ class CaptureAdapter(
         }
 
         holder.tvName.text = item.name
-        holder.tvConfidence.text = "Confidence: ${(item.confidence * 100).toInt()}%"
+        holder.tvConfidence.text = "Confidence: ${item.confidence}%"
+        holder.tvDescription.text = item.description
     }
 
     override fun getItemCount(): Int = items.size
@@ -189,7 +197,7 @@ data class CaptureResult(
     val imageResId: Int?, // for drawables testing
     val imageUri: String?, // for files or URLs
     val name: String,
-    val confidence: Float,
+    val confidence: Double,
     val description: String
 )
 
